@@ -1,0 +1,97 @@
+import java.util.*;
+
+public class Movies {
+    
+    public static void main(String[] args) {
+        //Test Functions Here
+    }
+    
+    String[] movies = new String[]{}; //pull movie names from database
+    
+    public String getMoviesFromString(String movieName){
+        for(String movie : movies)
+            if(movie.indexOf(movieName) > -1)
+                return movie;
+        
+        return null;
+    }
+    
+    public String getMoviesFromString(String movieName, int start){
+        for(int i = start; i < movies.length; i++)
+            if(movies[i].indexOf(movieName) > -1)
+                return movies[i];
+        
+        return null;
+    }
+    
+    double[] prices = new double[]{}; // pull movie prices from database
+    String[] startTimes = new String[]{}; // pull show start times from database
+    
+    
+    public MoviePrice cheapestMovieGivenRange(String time){
+        Time givenTime = new Time(time);
+        
+        
+    }
+    
+    public MoviePrice findCheapestMovie(String movieName){
+        //Find based off of name
+        
+        int minIdx = -1;
+        double minPrice = Double.MAX_VALUE;
+        
+        for(int i = 0; i < movies.length; i++){
+            if(movies[i].indexOf(movieName) > -1 && prices[i] < minPrice){
+                minIdx = i;
+                minPrice = prices[i];
+            }
+        }
+        
+        return new MoviePrice(movies[minIdx], minPrice);
+    }
+}
+
+class MoviePrice{
+    private String name;
+    private double price;
+    
+    public MoviePrice(){
+        name = "";
+        price = 0;
+    }
+    
+    public MoviePrice(String name, double price){
+        this.name = name;
+        this.price = price;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public double getPrice(){
+        return price;
+    }
+}
+
+class Time{
+    private int month, date, year, hour, minute, second;
+    
+    public Time(){
+        month = date = year = hour = minute = second = 0;
+    }
+    
+    public Time(String time){
+        //splits time in "mm/dd/yy/hr:min:sec" format
+        StringTokenizer st = new StringTokenizer(time, "/");
+        month = Integer.parseInt(st.nextToken());
+        date = Integer.parseInt(st.nextToken());
+        year = Integer.parseInt(st.nextToken());
+        String utcTime = st.nextToken();
+        
+        StringTokenizer splitTime = new StringTokenizer(utcTime, ":");
+        hour = Integer.parseInt(splitTime.nextToken());
+        minute = Integer.parseInt(splitTime.nextToken());
+        second = Integer.parseInt(splitTime.nextToken());
+    }
+}
