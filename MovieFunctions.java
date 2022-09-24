@@ -1,154 +1,110 @@
 import java.util.*;
 
-public class Movies {
-    
-    public static void main(String[] args) {
-        //Test Functions Here
-        MovieFunctions test = new MovieFunctions();
-        
-        //Testing the various getMoviesFromString methods
-        /*
-        System.out.println(test.getMoviesFromString("Batman"));
-        System.out.println(test.getMoviesFromString("batman"));
-        System.out.println(test.getAllMoviesFromString("batman"));
-        */
-        
-        //Testing Time class functionality
-        /*
-        Time testTime = new Time("09/01/22/11:00");
-        System.out.println(testTime.getMonth());
-        System.out.println(testTime.getDate());
-        System.out.println(testTime.getYear());
-        System.out.println(testTime.getHour());
-        System.out.println(testTime.getMinute());
-        */
-        
-        /*
-        Time testTime1 = new Time("09/01/22/11:00");
-        Time testTime2 = new Time("09/30/22/13:30");
-        Time testTime3 = new Time("09/24/22/14:40");
-        Time testTime4 = new Time("09/13/22/10:10");
-        System.out.println(test.findCheapeastMovie());
-        System.out.println(test.findCheapestMovie("Batman"));
-        System.out.println(test.findCheapestMovie(testTime1, testTime2));
-        System.out.println(test.findCheapestMovie(testTime3, testTime2));
-        System.out.println(test.findCheapestMovie(testTime4, testTime3));
-        */
-    }
-    
-    
-}
-
 class MovieFunctions{
-    public MovieFunctions(){
-        
+    public MovieFunctions(){}
+
+    List<String> movies = new ArrayList();
+    List<Double> prices = new ArrayList();
+    List<Time> showTimes = new ArrayList();
+
+    public void deconstruct(ArrayList<String> list){
+        for(String entry : list){
+            StringTokenizer st = new StringTokenizer(entry, ",");
+
+            String price = st.nextToken();
+            prices.add(Double.parseDouble((price.substring(price.indexOf("$") + 1, price.length()-1))));
+
+            String showTime = st.nextToken();
+            showTimes.add(new Time(showTime.substring(showTime.indexOf("=") + 1, showTime.length()-1)));
+
+            String movie = st.nextToken();
+            movies.add(movie.substring(movie.indexOf("=") + 1, movie.length()-1));
+        }
     }
-    
-    String[] movies = new String[]{"The Batman (2022)", 
-        "Batman v Superman: Dawn of Justice", 
-        "The Dark Knight (Batman)", 
-        "The Dark Knight Rises (Batman)",
-        "The Lego Batman Movie", 
-        "Batman Begins", 
-        "Morbius", 
-        "Spider-Man: No Way Home",
-        "Encanto",
-        "Turning Red"}; //pull movie names from database
-    
+
+
     public String getMoviesFromString(String movieName){
         String lowerMovieName = movieName.toLowerCase();
         for(String movie : movies)
             if((movie.toLowerCase()).indexOf(lowerMovieName) > -1)
                 return movie;
-        
+
         return null;
     }
-    
+
     public String getMoviesFromString(String movieName, int start){
         String lowerMovieName = movieName.toLowerCase();
-        for(int i = start; i < movies.length; i++)
-            if((movies[i].toLowerCase()).indexOf(lowerMovieName) > -1)
-                return movies[i];
-        
+        for(int i = start; i < movies.size(); i++)
+            if((movies.get(i).toLowerCase()).indexOf(lowerMovieName) > -1)
+                return movies.get(i);
+
         return null;
     }
-    
+
     public List<String> getAllMoviesFromString(String movieName){
         List<String> allMoviesWithName = new ArrayList<>();
         String lowerMovieName = movieName.toLowerCase();
-        
+
         for(String movie : movies)
             if((movie.toLowerCase()).indexOf(lowerMovieName) > -1)
                 allMoviesWithName.add(movie);
-        
+
         return allMoviesWithName;
     }
-    
-    double[] prices = new double[]{15, 13, 10, 8, 10, 7, 2, 12.5, 14, 1.5}; // pull movie prices from database
-    Time[] showTimes = new Time[]{new Time("09/01/22/11:00"),
-        new Time("09/03/22/10:00"),
-        new Time("09/04/22/15:00"),
-        new Time("09/07/22/16:00"),
-        new Time("09/15/22/14:00"),
-        new Time("09/22/22/09:00"),
-        new Time("09/19/22/18:00"),
-        new Time("09/13/22/13:00"),
-        new Time("09/29/22/15:00"),
-        new Time("09/30/22/13:30")}; // pull show start times from database
-    
-    public int findCheapeastMovie(){
+
+    public int findCheapestMovie(){
         //Find cheapest in general
-        
+
         int minIdx = -1;
         double minPrice = Double.MAX_VALUE;
-        
-        for(int i = 0; i < movies.length; i++)
-            if(prices[i] < minPrice){
+
+        for(int i = 0; i < movies.size(); i++)
+            if(prices.get(i) < minPrice){
                 minIdx = i;
-                minPrice = prices[i];
+                minPrice = prices.get(i);
             }
-        
+
         return minIdx;
     }
     public int findCheapestMovie(Time startTime, Time endTime){
         //Find based on time
-        
+
         int minIdx = -1;
         double minPrice = Double.MAX_VALUE;
-        
-        for(int i = 0; i < movies.length; i++)
-            if(prices[i] < minPrice && showTimes[i].inRange(startTime, endTime)){
+
+        for(int i = 0; i < movies.size(); i++)
+            if(prices.get(i) < minPrice && showTimes.get(i).inRange(startTime, endTime)){
                 minIdx = i;
-                minPrice = prices[i];
+                minPrice = prices.get(i);
             }
-        
+
         return minIdx;
     }
-    
+
     public int findCheapestMovie(String movieName){
         //Find based on name
-        
+
         int minIdx = -1;
         double minPrice = Double.MAX_VALUE;
-        
-        for(int i = 0; i < movies.length; i++){
-            if((movies[i].toLowerCase()).indexOf(movieName.toLowerCase()) > -1 && prices[i] < minPrice){
+
+        for(int i = 0; i < movies.size(); i++){
+            if((movies.get(i).toLowerCase()).indexOf(movieName.toLowerCase()) > -1 && prices.get(i) < minPrice){
                 minIdx = i;
-                minPrice = prices[i];
+                minPrice = prices.get(i);
             }
         }
-        
+
         return minIdx;
     }
 }
 
 class Time{
     private int month, date, year, hour, minute;
-    
+
     public Time(){
         month = date = year = hour = minute = 0;
     }
-    
+
     public Time(String time){
         //splits time in "mm/dd/yy/hr:min:sec" format
         StringTokenizer st = new StringTokenizer(time, "/");
@@ -156,67 +112,67 @@ class Time{
         date = Integer.parseInt(st.nextToken());
         year = Integer.parseInt(st.nextToken());
         String utcTime = st.nextToken();
-        
+
         StringTokenizer splitTime = new StringTokenizer(utcTime, ":");
         hour = Integer.parseInt(splitTime.nextToken());
         minute = Integer.parseInt(splitTime.nextToken());
     }
-    
+
     public int getMonth(){        return month;    }
     public int getDate(){        return date;    }
     public int getYear(){        return year;    }
     public int getHour(){        return hour;    }
     public int getMinute(){        return minute;    }
-    
+
     public boolean inRange(Time start, Time end){
         if(year > start.getYear() && year < end.getYear())
             return true;
-        
+
         if(year == start.getYear() && year == end.getYear()){
             if(month > start.getMonth() && month < end.getMonth())
                 return true;
-            
+
             if(month == start.getMonth() && month == end.getMonth()){
                 if(date > start.getDate() && date < end.getDate())
                     return true;
-                
+
                 if(date == start.getDate() && date == end.getDate()){
                     if(hour > start.getHour() && hour < end.getHour())
                         return true;
-                    
+
                     if(hour == start.getHour() && hour == end.getHour())
                         return minute >= start.getMinute() && minute <= end.getMinute();
-                    
+
                     else if(hour == start.getHour())
                         return minute >= start.getMinute();
                     else if(hour == end.getHour())
                         return minute <= end.getMinute();
                 }
-                
+
                 else if(date == start.getDate()){
                     if(hour > start.getHour())
                         return true;
-                    
+
                     if(hour == start.getHour())
                         return minute >= start.getMinute();
                 }
                 else if(date == end.getDate()){
                     if(hour == end.getHour())
                         return true;
-                    
+
                     if(hour < end.getHour())
                         return minute <= end.getHour();
                 }
             }
-            
+
             else if(month == start.getMonth()){
                 if(date > start.getDate())
                     return true;
-                
+
                 if(date == start.getDate()){
                     if(hour > start.getHour())
                         return true;
-                    
+
                     if(hour == start.getHour())
                         return minute >= start.getMinute();
                 }
@@ -224,29 +180,29 @@ class Time{
             else if(month == end.getMonth()){
                 if(date < end.getDate())
                     return true;
-                
+
                 if(date == end.getDate()){
                     if(hour == end.getHour())
                         return true;
-                    
+
                     if(hour < end.getHour())
                         return minute <= end.getHour();
                 }
             }
         }
-        
+
         else if(year == start.getYear()){
             if(month > start.getMonth())
                 return true;
-            
+
             if(month == start.getMonth()){
                 if(date > start.getDate())
                     return true;
-                
+
                 if(date == start.getDate()){
                     if(hour > start.getHour())
                         return true;
-                    
+
                     if(hour == start.getHour())
                         return minute >= start.getMinute();
                 }
@@ -255,21 +211,22 @@ class Time{
         else if(year == end.getYear()){
             if(month < end.getMonth())
                 return true;
-            
+
             if(month == end.getMonth()){
                 if(date < end.getDate())
                     return true;
-                
+
                 if(date == end.getDate()){
                     if(hour == end.getHour())
                         return true;
-                    
+
                     if(hour < end.getHour())
                         return minute <= end.getHour();
                 }
             }
         }
-        
+
         return false;
     }
 }
+
