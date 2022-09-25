@@ -23,31 +23,31 @@ class MovieFunctions{
     }
 
 
-    public String getMoviesFromString(String movieName){
+    public int getMoviesFromString(String movieName){
         String lowerMovieName = movieName.toLowerCase();
-        for(String movie : movies)
-            if((movie.toLowerCase()).indexOf(lowerMovieName) > -1)
-                return movie;
+        for(int i = 0; i < movies.size(); i++)
+            if((movies.get(i).toLowerCase()).indexOf(lowerMovieName) > -1)
+                return i;
 
-        return null;
+        return -1;
     }
 
-    public String getMoviesFromString(String movieName, int start){
+    public int getMoviesFromString(String movieName, int start){
         String lowerMovieName = movieName.toLowerCase();
         for(int i = start; i < movies.size(); i++)
             if((movies.get(i).toLowerCase()).indexOf(lowerMovieName) > -1)
-                return movies.get(i);
+                return i;
 
-        return null;
+        return -1;
     }
 
-    public List<String> getAllMoviesFromString(String movieName){
-        List<String> allMoviesWithName = new ArrayList<>();
+    public List<Integer> getAllMoviesFromString(String movieName){
+        List<Integer> allMoviesWithName = new ArrayList<>();
         String lowerMovieName = movieName.toLowerCase();
 
-        for(String movie : movies)
-            if((movie.toLowerCase()).indexOf(lowerMovieName) > -1)
-                allMoviesWithName.add(movie);
+        for(int i = 0; i < movies.size(); i++)
+            if((movies.get(i).toLowerCase()).indexOf(lowerMovieName) > -1)
+                allMoviesWithName.add(i);
 
         return allMoviesWithName;
     }
@@ -106,7 +106,7 @@ class Time{
     }
 
     public Time(String time){
-        //splits time in "mm/dd/yy/hr:min:sec" format
+        //splits time in "mm/dd/yy/hr:min" format
         StringTokenizer st = new StringTokenizer(time, "/");
         month = Integer.parseInt(st.nextToken());
         date = Integer.parseInt(st.nextToken());
