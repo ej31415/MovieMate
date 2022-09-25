@@ -12,13 +12,13 @@ class MovieFunctions{
             StringTokenizer st = new StringTokenizer(entry, ",");
 
             String price = st.nextToken();
-            prices.add(Double.parseDouble((price.substring(price.indexOf("$") + 1, price.length()-1))));
+            prices.add(Double.parseDouble((price.substring(price.indexOf("$") + 1, price.length()))));
 
             String showTime = st.nextToken();
-            showTimes.add(new Time(showTime.substring(showTime.indexOf("=") + 1, showTime.length()-1)));
+            showTimes.add(new Time(showTime.substring(showTime.indexOf("=") + 1, showTime.length())));
 
             String movie = st.nextToken();
-            movies.add(movie.substring(movie.indexOf("=") + 1, movie.length()-1));
+            movies.add(movie.substring(movie.indexOf("=") + 1, movie.length()));
         }
     }
 
