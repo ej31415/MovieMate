@@ -96,16 +96,35 @@ class MovieFunctions{
 
         return minIdx;
     }
+    
+    public int findCheapestMovie(String movieName, Time startTime, Time endTime){
+        List<Integer> allMoviesWithName = getAllMoviesFromString(movieName);
+        
+        int minIdx = -1;
+        double minPrice = Double.MAX_VALUE;
+        
+        for(int i = 0; i < allMoviesWithName.size(); i++){
+            if(prices[i] < minPrice && showTimes[i].inRange(startTime, endTime)){
+                minIdx = i;
+                minPrice = prices[i];
+            }
+        }
+        
+        return minIdx;
+    }
 }
 
 class Time{
     private int month, date, year, hour, minute;
+    private String time;
 
     public Time(){
         month = date = year = hour = minute = 0;
     }
 
     public Time(String time){
+        this.time = time;
+        
         //splits time in "mm/dd/yy/hr:min" format
         StringTokenizer st = new StringTokenizer(time, "/");
         month = Integer.parseInt(st.nextToken());
@@ -123,6 +142,8 @@ class Time{
     public int getYear(){        return year;    }
     public int getHour(){        return hour;    }
     public int getMinute(){        return minute;    }
+    
+    public String toString(){       return time;    }
 
     public boolean inRange(Time start, Time end){
         if(year > start.getYear() && year < end.getYear())
