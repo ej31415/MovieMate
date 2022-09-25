@@ -104,9 +104,9 @@ class MovieFunctions{
         double minPrice = Double.MAX_VALUE;
         
         for(int i = 0; i < allMoviesWithName.size(); i++){
-            if(prices[i] < minPrice && showTimes[i].inRange(startTime, endTime)){
+            if(prices.get(i) < minPrice && showTimes.get(i).inRange(startTime, endTime)){
                 minIdx = i;
-                minPrice = prices[i];
+                minPrice = prices.get(i);
             }
         }
         
